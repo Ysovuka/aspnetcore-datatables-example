@@ -3,7 +3,25 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27004.2002
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNetCore.DataTables.Web", "src\AspNetCore.DataTables.Web\AspNetCore.DataTables.Web.csproj", "{029FC38C-8F8A-442F-8D48-DF84BC72CDCD}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{45989039-DE37-4F4A-BF1D-9BFBAB987EC7}"
+EndProject
 Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{029FC38C-8F8A-442F-8D48-DF84BC72CDCD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{029FC38C-8F8A-442F-8D48-DF84BC72CDCD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{029FC38C-8F8A-442F-8D48-DF84BC72CDCD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{029FC38C-8F8A-442F-8D48-DF84BC72CDCD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{45989039-DE37-4F4A-BF1D-9BFBAB987EC7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{45989039-DE37-4F4A-BF1D-9BFBAB987EC7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{45989039-DE37-4F4A-BF1D-9BFBAB987EC7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{45989039-DE37-4F4A-BF1D-9BFBAB987EC7}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection

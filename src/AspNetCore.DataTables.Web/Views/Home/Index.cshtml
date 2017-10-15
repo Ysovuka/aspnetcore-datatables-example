@@ -1,0 +1,42 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<table id="dataTable" class="table table-responsive">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Company Name</th>
+            <th>Address</th>
+            <th>Town</th>
+        </tr>
+    </thead>
+</table>
+
+@section scripts
+{
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#dataTable").dataTable({
+                serverSide: true,
+                ajax: {
+                    url: "@Url.Action("AjaxHandler", "Home")",
+                    type: "POST",
+                    contentType: "application/json",
+                    data: function (d) {
+                        return JSON.stringify(d);
+                    }
+                },
+                processing : true,
+                columns: [
+                    { data: "id" },
+                    { data: "name" },
+                    { data: "address" },
+                    { data: "town" }
+                ]
+            })
+        })
+    </script>
+
+}

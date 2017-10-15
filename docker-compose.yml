@@ -1,0 +1,8 @@
+version: '3'
+
+services:
+  aspnetcore.datatables.web:
+    image: aspnetcore.datatables.web
+    build:
+      context: ./src/AspNetCore.DataTables.Web
+      dockerfile: Dockerfile
