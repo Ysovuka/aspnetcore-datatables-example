@@ -4,6 +4,7 @@
 
 @section styles{ 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" /> 
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.4.2/css/buttons.dataTables.min.css" />
     <style>
     .custom-loader-color {
         color: #fff !important;
@@ -25,7 +26,7 @@
 
 }
 
-<div class="row">
+<div class="row" style="margin-top: 100px">
     <div class="col-sm-12 col-md-12 col-lg-12">
         <table id="dataTable" class="table table-responsive">
             <thead>
@@ -47,19 +48,24 @@
         </table>
     </div>
 </div>
+
+
 @section scripts
 {
     <script src="~/js/dataTables.cellEdit.js" asp-append-version="true"></script>
+    <script src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.2.2/js/dataTables.buttons.min.js"></script>
 
     <script type="text/javascript">
         $(document).ready(function () {
 
             $('#dataTable tfoot th').each(function () {
                 var title = $(this).text();
-                $(this).html('<input type="text" placeholder="Search ' + title + '" />');
+                $(this).html('<input type="text" placeholder="Search ' + title + '" class="form-control"/>');
             });
 
             var table = $("#dataTable").DataTable({
+                dom: '<"col-sm-1 mb-5"B><"col-sm-3"><"col-sm-4"l><"col-sm-4"f><"row">rt<"row"><"col-sm-4"><"col-sm-4"p><"col-sm-4">',
                 serverSide: true,
                 ajax: {
                     url: "@Url.Action("AjaxHandler", "Home")",
@@ -73,12 +79,28 @@
                     processing: "<div class='overlay custom-loader-background'><i class='fa fa-cog fa-spin custom-loader-color'></i></div>"
                 },
                 processing: true,
+                buttons: [
+                    {
+                        text: 'New',
+                        action: function (e, dt, node, config) {
+                            table.row.add({
+                                id: -1,
+                                name: 'New Row',
+                                address: 'New Row',
+                                town: 'New Row'
+                            });
+
+                            
+                        }
+                    }
+                ],
                 columns: [
                     { data: "id", name: "Id" },
                     { data: "name", name: "Name" },
                     { data: "address", name: "Address" },
                     { data: "town", name: "Town" }
-                ]
+                ],
+
             });
 
             table.columns().every(function () {
@@ -95,15 +117,15 @@
 
             table.MakeCellsEditable({
                 onUpdate: onUpdate,
-                inputCss: 'form-control col-sm-10 mb-5',
+                inputCss: 'form-control mb-5',
                 columns: [1, 2, 3],
                 allowNulls: {
                     columns: [1],
                     errorClass: 'error'
                 },
                 confirmationButton: {
-                    'confirmCss': 'btn btn-primary col-sm-5',
-                    'cancelCss': 'btn btn-danger col-sm-5 pull-right',
+                    'confirmCss': 'btn btn-primary ',
+                    'cancelCss': 'btn btn-danger pull-right',
                 },
                 inputTypes: [
                     {
