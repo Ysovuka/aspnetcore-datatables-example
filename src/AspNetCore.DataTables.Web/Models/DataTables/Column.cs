@@ -11,6 +11,6 @@ namespace AspNetCore.DataTables.Web.Models.DataTables
         public string name { get; set; }
         public bool searchable { get; set; }
         public bool orderable { get; set; }
-        public Search search { get; set; }
+        public Search search { get; set; } = new Search();
     }
 }

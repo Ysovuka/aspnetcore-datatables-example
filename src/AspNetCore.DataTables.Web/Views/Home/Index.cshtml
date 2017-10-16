@@ -2,6 +2,25 @@
     ViewData["Title"] = "Home Page";
 }
 
+@section styles{ 
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" /> 
+    <style>
+    .custom-loader-color {
+        color: #fff !important;
+        font-size: 50px !important;
+    }
+
+    .custom-loader-background {
+        background-color: crimson !important;
+    }
+
+    .custom-middle-align {
+        vertical-align: middle !important;
+    }  
+    </style>
+
+}
+
 <table id="dataTable" class="table table-responsive">
     <thead>
         <tr>
@@ -11,6 +30,14 @@
             <th>Town</th>
         </tr>
     </thead>
+    <tfoot>
+        <tr>
+            <th>Id</th>
+            <th>Comapny Name</th>
+            <th>Address</th>
+            <th>Town</th>
+        </tr>
+    </tfoot>
 </table>
 
 @section scripts
@@ -18,7 +45,13 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
-            $("#dataTable").dataTable({
+
+            $('#dataTable tfoot th').each(function () {
+                var title = $(this).text();
+                $(this).html('<input type="text" placeholder="Search ' + title + '" />');
+            });
+
+            var table = $("#dataTable").DataTable({
                 serverSide: true,
                 ajax: {
                     url: "@Url.Action("AjaxHandler", "Home")",
@@ -28,14 +61,29 @@
                         return JSON.stringify(d);
                     }
                 },
-                processing : true,
+                language: {
+                    processing: "<div class='overlay custom-loader-background'><i class='fa fa-cog fa-spin custom-loader-color'></i></div>"
+                },
+                processing: true,
                 columns: [
-                    { data: "id" },
-                    { data: "name" },
-                    { data: "address" },
-                    { data: "town" }
+                    { data: "id", name: "Id" },
+                    { data: "name", name: "Name" },
+                    { data: "address", name: "Address" },
+                    { data: "town", name: "Town" }
                 ]
-            })
+            });
+
+            table.columns().every(function () {
+                var that = this;
+
+                $('input', this.footer()).on('keyup change', function () {
+                    if (that.search() !== this.value) {
+                        that
+                            .search(this.value)
+                            .draw();
+                    }
+                });
+            });
         })
     </script>
 

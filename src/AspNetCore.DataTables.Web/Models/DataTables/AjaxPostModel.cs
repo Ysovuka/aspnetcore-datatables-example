@@ -11,8 +11,8 @@ namespace AspNetCore.DataTables.Web.Models.DataTables
         public int draw { get; set; }
         public int start { get; set; }
         public int length { get; set; }
-        public List<Column> columns { get; set; }
-        public Search search { get; set; }
-        public List<Order> order { get; set; }
+        public List<Column> columns { get; set; } = new List<Column>();
+        public List<Order> order { get; set; } = new List<Order>();
+        public Search search { get; set; } = new Search();
     }
 }

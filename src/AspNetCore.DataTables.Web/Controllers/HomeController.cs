@@ -1,11 +1,14 @@
-﻿using System;
+﻿using AspNetCore.DataTables.Web.Models;
+using AspNetCore.DataTables.Web.Models.DataTables;
+
+using Microsoft.AspNetCore.Mvc;
+
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using AspNetCore.DataTables.Web.Models;
-using AspNetCore.DataTables.Web.Models.DataTables;
 
 namespace AspNetCore.DataTables.Web.Controllers
 {
@@ -17,17 +20,24 @@ namespace AspNetCore.DataTables.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult AjaxHandler(AjaxPostModel viewModel)
+        public IActionResult AjaxHandler([FromBody] AjaxPostModel viewModel)
         {
             var context = new Data.CompanyContext();
-            var allCompanies = context.Companies.ToList();
+            var unfilteredCompanies = context.Companies.ToList();
+            IEnumerable<Company> filteredCompanies = unfilteredCompanies.Filter(viewModel.columns, viewModel.search.value);
+
+            IOrderedEnumerable<Company> orderedFilteredCompanies = filteredCompanies.Sort(viewModel.order, viewModel.columns);
+            
+            orderedFilteredCompanies
+                .Skip(viewModel.start)
+                .Take(viewModel.length);
 
             return Json(new
             {
                 draw = viewModel.draw,
-                recordsTotal = allCompanies.Count,
-                recordsFiltered = allCompanies.Count,
-                data = allCompanies
+                recordsTotal = unfilteredCompanies.Count,
+                recordsFiltered = orderedFilteredCompanies.Count(),
+                data = orderedFilteredCompanies
             });
         }
 
@@ -35,5 +45,6 @@ namespace AspNetCore.DataTables.Web.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
     }
 }
