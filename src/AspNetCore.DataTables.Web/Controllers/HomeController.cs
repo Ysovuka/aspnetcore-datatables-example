@@ -22,8 +22,8 @@ namespace AspNetCore.DataTables.Web.Controllers
         [HttpPost]
         public IActionResult AjaxHandler([FromBody] AjaxPostModel viewModel)
         {
-            var context = new Data.CompanyContext();
-            var unfilteredCompanies = context.Companies.ToList();
+            
+            var unfilteredCompanies = Data.CompanyContext.Companies.ToList();
             IEnumerable<Company> filteredCompanies = unfilteredCompanies.Filter(viewModel.columns, viewModel.search.value);
 
             IOrderedEnumerable<Company> orderedFilteredCompanies = filteredCompanies.Sort(viewModel.order, viewModel.columns);
@@ -39,6 +39,19 @@ namespace AspNetCore.DataTables.Web.Controllers
                 recordsFiltered = orderedFilteredCompanies.Count(),
                 data = orderedFilteredCompanies
             });
+        }
+
+        [HttpPost]
+        public IActionResult SaveRowDetails([FromBody] Company model)
+        {
+            var company = Data.CompanyContext.Companies.FirstOrDefault(c => c.Id == model.Id);
+            if (company != null)
+            {
+                Data.CompanyContext.Companies.Remove(company);
+                Data.CompanyContext.Companies.Add(model);
+            }
+
+            return Json(new { success = true });
         }
 
         public IActionResult Error()

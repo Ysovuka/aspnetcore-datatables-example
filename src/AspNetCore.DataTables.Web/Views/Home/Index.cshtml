@@ -17,31 +17,39 @@
     .custom-middle-align {
         vertical-align: middle !important;
     }  
+
+    .mb-5{
+        margin-bottom: 5px;
+    }
     </style>
 
 }
 
-<table id="dataTable" class="table table-responsive">
-    <thead>
-        <tr>
-            <th>Id</th>
-            <th>Company Name</th>
-            <th>Address</th>
-            <th>Town</th>
-        </tr>
-    </thead>
-    <tfoot>
-        <tr>
-            <th>Id</th>
-            <th>Comapny Name</th>
-            <th>Address</th>
-            <th>Town</th>
-        </tr>
-    </tfoot>
-</table>
-
+<div class="row">
+    <div class="col-sm-12 col-md-12 col-lg-12">
+        <table id="dataTable" class="table table-responsive">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Company Name</th>
+                    <th>Address</th>
+                    <th>Town</th>
+                </tr>
+            </thead>
+            <tfoot>
+                <tr>
+                    <th>Id</th>
+                    <th>Comapny Name</th>
+                    <th>Address</th>
+                    <th>Town</th>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
 @section scripts
 {
+    <script src="~/js/dataTables.cellEdit.js" asp-append-version="true"></script>
 
     <script type="text/javascript">
         $(document).ready(function () {
@@ -84,7 +92,51 @@
                     }
                 });
             });
+
+            table.MakeCellsEditable({
+                onUpdate: onUpdate,
+                inputCss: 'form-control col-sm-10 mb-5',
+                columns: [1, 2, 3],
+                allowNulls: {
+                    columns: [1],
+                    errorClass: 'error'
+                },
+                confirmationButton: {
+                    'confirmCss': 'btn btn-primary col-sm-5',
+                    'cancelCss': 'btn btn-danger col-sm-5 pull-right',
+                },
+                inputTypes: [
+                    {
+                        column: 1,
+                        type: 'text',
+                        options: null
+                    },
+                    {
+                        column: 2,
+                        type: 'text',
+                        options: null
+                    },
+                    {
+                        column: 3,
+                        type: 'text',
+                        options: null
+                    },
+                ]
+
+            })
         })
+
+        function onUpdate(updatedCell, updatedRow, oldValue)
+        {
+            var table = $($(updatedCell).closest('table')).DataTable();
+
+            $.ajax({
+                url: '@Url.Action("SaveRowDetails", "Home")',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(updatedRow.data()),
+            });
+        }
     </script>
 
 }

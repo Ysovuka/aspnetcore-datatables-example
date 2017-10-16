@@ -8,7 +8,7 @@ namespace AspNetCore.DataTables.Web.Data
 {
     public class CompanyContext
     {
-        public IList<Company> Companies { get; set; } = new List<Company>()
+        public static IList<Company> Companies { get; set; } = new List<Company>()
         {
             new Company { Id = 1, Name = "Microsoft", Address = "Redmond", Town = "USA"},
             new Company { Id = 2, Name = "Google", Address = "Mountain View", Town = "USA"},
