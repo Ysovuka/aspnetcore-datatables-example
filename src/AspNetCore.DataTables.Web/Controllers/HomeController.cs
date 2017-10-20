@@ -26,9 +26,9 @@ namespace AspNetCore.DataTables.Web.Controllers
             var unfilteredCompanies = Data.CompanyContext.Companies.ToList();
             IEnumerable<Company> filteredCompanies = unfilteredCompanies.Filter(viewModel.columns, viewModel.search.value);
 
-            IOrderedEnumerable<Company> orderedFilteredCompanies = filteredCompanies.Sort(viewModel.order, viewModel.columns);
-            
-            orderedFilteredCompanies
+            IEnumerable<Company> orderedFilteredCompanies = filteredCompanies.Sort(viewModel.order, viewModel.columns);
+
+            var results = orderedFilteredCompanies
                 .Skip(viewModel.start)
                 .Take(viewModel.length);
 
@@ -37,7 +37,7 @@ namespace AspNetCore.DataTables.Web.Controllers
                 draw = viewModel.draw,
                 recordsTotal = unfilteredCompanies.Count,
                 recordsFiltered = orderedFilteredCompanies.Count(),
-                data = orderedFilteredCompanies
+                data = results
             });
         }
 
